@@ -1,0 +1,31 @@
+<?php
+/**
+ * @file
+ * hcam_migrate.install
+ */
+
+/**
+ * Implement to hook_uninstall().
+ */
+function hcam_migrate_uninstall() {
+//  variable_del('hcam_migrate_remote_host_connection');
+//  variable_del('hcam_migrate_db');
+
+  hcam_migrate_disable();
+}
+
+/**
+ * Disable Langgo Migrations.
+ */
+function hcam_migrate_disable() {
+  Migration::deregisterMigration('HCUserMigration');
+  Migration::deregisterMigration('HCUserRolesMigration');
+  Migration::deregisterMigration('HCUserPicturesMigration');
+  Migration::deregisterMigration('HCBlocks');
+  Migration::deregisterMigration('HCBlocksRoles');
+  Migration::deregisterMigration('HCBoxes');
+//  Migration::deregisterMigration('HCMenu');
+//  Migration::deregisterMigration('HCMenuLink');
+  Migration::deregisterMigration('HCInputFormat');
+//  Migration::deregisterMigration('LanggoMigrateContact');
+}

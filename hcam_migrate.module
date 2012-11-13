@@ -1,0 +1,63 @@
+<?php
+/**
+ * @file
+ * hcam_migrate.module
+ */
+
+/**
+ * Define the source database
+ */
+if (!defined('HCAM_MIGRATE_DB_KEY')) {
+  define('HCAM_MIGRATE_DB_KEY', 'db_hcam');
+}
+/**
+ * Implements hook_migrate_api().
+ */
+function hcam_migrate_migrate_api() {
+  return array('api' => 2);
+}
+
+abstract class LanggoMigrateBase extends Migration {
+  public function __construct() {
+    parent::__construct(MigrateGroup::getInstance('Langgo'));
+    $this->issuePattern = 'https://bitbucket.org/vietcoop/langgo_migrate/issue/:id:';
+
+//    $this->description = '…';
+//
+//    // Dependencies
+//    $this->dependencies[] = 'LGMLanguage';
+//    $this->dependencies[] = 'LGMInputFormat';
+//    $this->dependencies[] = 'LGMUser';
+//
+//    // Key Mapping
+//    // Source
+//    // Destination
+//    // Field Mapping
+  }
+
+//  public function prepareRow($row) {}
+//  public function prepare($entity, $row) {}
+//  public function complete($entity, $row) {}
+
+  /**
+   * Make sure default default will be used.
+   */
+  public function __destruct() {
+    db_set_active();
+  }
+
+  /**
+   * Get variable in Drupal 6 database.
+   */
+  protected function variableGet($name) {
+    db_set_active(HCAM_MIGRATE_DB_KEY);
+    $select = db_select('variable');
+    $select->condition('name', $name);
+    $select->fields('variable', array('value'));
+    if ($value = $select->execute()->fetchColumn()) {
+      db_set_active();
+      return unserialize($value);
+    }
+    db_set_active();
+  }
+}

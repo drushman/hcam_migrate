@@ -1,0 +1,19 @@
+name = Langgo Taxonomy Migrate
+version = 7.x-1.0-alpha1
+description = Module to migrate langgo Drupal 6 to LanggoMainApp.
+core = 7.x
+package = "Viet Coop"
+
+files[] = langgo_migrate_taxonomy.catalog.inc
+files[] = langgo_migrate_taxonomy.chude_baihoc.inc
+files[] = langgo_migrate_taxonomy.langgo_help.inc
+files[] = langgo_migrate_taxonomy.tags.inc
+files[] = langgo_migrate_taxonomy.theloai.inc
+files[] = langgo_migrate_taxonomy.chude_noidung.inc
+files[] = langgo_migrate_taxonomy.keywords_library.inc
+files[] = langgo_migrate_taxonomy.keywords_grammar.inc
+
+dependencies[] = migrate
+dependencies[] = langgo_migrate_main
+dependencies[] = taxonomy
+

@@ -1,0 +1,26 @@
+name = Hcam.tv Migrate
+version = 7.x-1.x-dev
+description = "Module to migrate hcam.tv in Drupal 6 to Drupal 7."
+core = 7.x
+;configure = admin/config/langgo/langgo-migrate
+package = Viet Coop
+
+files[] = hcam_migrate.language.inc
+
+files[] = core/hcam_migrate.file.inc
+files[] = core/hcam_migrate.system.inc
+files[] = core/hcam_migrate.user.inc
+files[] = core/hcam_migrate.block.inc
+files[] = core/hcam_migrate.menu.inc
+files[] = core/hcam_migrate.input_format.inc
+files[] = core/hcam_migrate.comment.inc
+
+
+
+
+dependencies[] = migrate
+dependencies[] = contact
+; Why do we need php module?
+dependencies[] = php
+dependencies[] = transliteration
+dependencies[] = i18n

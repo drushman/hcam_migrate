@@ -1,0 +1,59 @@
+<?php
+/**
+ * Implements hook_migrate_api().
+ */
+function langgo_migrate_taxonomy_migrate_api() {
+  return array('api' => 2);
+}
+
+class LanggoTaxonomyMigrateBase extends LanggoMigrateBase {
+  public function __construct(array $arguments) {
+    $this->arguments = $arguments;
+    parent::__construct();    
+    $this->description = t('Migrate Tag Terms for vocabulary %vocabulary from original vid %original_vid', array('%vocabulary' => $arguments['vocabulary'], $arguments['src_vid']));
+    $this->map = new MigrateSQLMap($this->machineName,
+      array(
+        'tid' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'description' => 'D6 Unique Term ID',
+          'alias' => 'td',
+        )
+      ),
+      MigrateDestinationTerm::getKeySchema()
+    );
+ 
+    db_set_active(HCAM_MIGRATE_DB_KEY);
+    $query = db_select('term_data', 'td')
+      ->fields('td', array('tid', 'vid', 'name', 'description', 'weight'))
+      ->condition('td.vid', $arguments['src_vid'], '=');
+    $query->join('term_hierarchy', 'th', 'td.tid = th.tid');
+    $query->addField('th', 'parent');
+    $query->orderBy('th.parent', 'ASC');
+ 
+    $this->source = new MigrateSourceSQL($query, array(), NULL, array('map_joinable' => FALSE));
+ 
+    // Set up our destination - term in this case.
+    $this->destination = new MigrateDestinationTerm($arguments['vocabulary']);
+ 
+    $this->addFieldMapping('name', 'name');
+    $this->addFieldMapping('description', 'description');
+    $this->addFieldMapping('format')->defaultValue('plain_text');
+    $this->addFieldMapping('weight', 'weight');
+    $this->addFieldMapping('parent', 'parent')->sourceMigration($this->getMachineName());
+ 
+    // Unmapped source fields
+    $this->addUnmigratedSources(array('vid'));
+ 
+    // Unmapped destination fields
+    $this->addUnmigratedDestinations(array('path', 'parent_name'));
+  }
+  
+  public function prepareRow($current_row) {
+    if ($current_row->parent == 0) {
+      unset($current_row->parent);
+    }
+    return TRUE;
+  }
+}

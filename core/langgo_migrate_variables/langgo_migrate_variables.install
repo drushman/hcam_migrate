@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * langgo_migrate.install
+ */
+
+/**
+ * Implement to hook_uninstall().
+ */
+function langgo_migrate_variables_uninstall() {
+  
+  Migration::deregisterMigration('LanggoMigrateGoogleAnalyticsSettings');
+  Migration::deregisterMigration('LanggoMigrateI18n');
+  Migration::deregisterMigration('LanggoMigrateI18nSetting');
+  Migration::deregisterMigration('LanggoMigrateWebformSettings');
+
+}

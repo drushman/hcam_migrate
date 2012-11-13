@@ -1,0 +1,12 @@
+<?php
+/**
+ * @file langgo_migrate_node.module
+ *
+ */
+
+/**
+ * Implements hook_migrate_api().
+ */
+function langgo_migrate_node_migrate_api() {
+  return array('api' => 2);
+}

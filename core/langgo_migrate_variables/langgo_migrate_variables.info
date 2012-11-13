@@ -1,0 +1,11 @@
+name = Langgo Migrate Variables Modules
+version = 7.x-1.0-alpha1
+description = Module to migrate langgo Drupal 6 Variables Modules to LanggoMainApp.
+core = 7.x
+package = "Viet Coop"
+
+files[] = langgo_migrate_variables.gl.analytics.inc
+files[] = langgo_migrate_variables.i18n.inc
+
+dependencies[] = googleanalytics
+dependencies[] = langgo_migrate_main
